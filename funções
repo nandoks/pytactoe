@@ -1,0 +1,24 @@
+init_partida()
+ => começa a partida criando um array 1x3 preenchido de 0, ganhou_partida = False
+
+outra_partida()	
+ => pergunta ao jogador se ele quer começar outra partida, se quiser volta para a função init_partida, senão fecha o jogo 
+
+ganhou_partida(jogador, grelha)
+ => verifica se alguem ganhou a partida no final de cada turno, chamando as 3 funções ganhou_vertical, ganhou_horizontal, ganhou_diagonal, retornando True se alguma das subfunções retornar True
+
+ganhou_vertical(grelha):
+ => verifica se houve vitória na vertical, devolve False se não houve vitória, True se houve vitória
+
+ganhou_horizontal(grelha):
+ => verifica se houve vitória na horizontal, devolve False se não houve vitória, True se houve vitória
+
+ganhou_diagonal(grelha):
+ => verifica se houve vitória na diagonal, devolve False se não houve vitória, True se houve vitória
+
+imprime_grelha(grelha)
+  => imprime o estado atual da grelha do jogo
+
+jogada(jogador, pos_x, pos_y)
+ => faz a jogada modificando a grelha na posição [x][y] com o valor do jogador
+
