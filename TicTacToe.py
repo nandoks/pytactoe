@@ -1,4 +1,7 @@
 
+"""starts a game defining a board of a 3x3 array filled with 0
+
+"""
 def init_partida():
 	grelha = [[0,0,0],[0,0,0],[0,0,0]]
 	jogador = 1
@@ -16,13 +19,14 @@ def init_partida():
 	else:
 		print("Volte sempre!")
 
+# prints the board on the screen
 def imprime_grelha(grelha):
 	for x in range(0,3):
 		for y in range(0,3):
 			print(grelha[x][y],end='')
 		print(' ')
 
-
+# makes a play on the board
 def jogar(grelha, jogador, rodada):
 	pos_x = int(input("Escolha a linha: ")) -1
 	pos_y = int(input("Escolha a coluna: ")) -1
@@ -32,6 +36,7 @@ def jogar(grelha, jogador, rodada):
 		print("Posição inválida")
 		jogar(grelha,jogador, rodada)
 
+# tries a move, make the move if the position is empty, else returns en error and calls itself again
 def jogada(grelha, jogador, pos_x, pos_y, rodada):
 	if grelha[pos_x][pos_y] == 0:
 		grelha[pos_x][pos_y] = jogador
@@ -39,6 +44,10 @@ def jogada(grelha, jogador, pos_x, pos_y, rodada):
 		print("Jogada já feita,escolha outra posição")
 		jogar(grelha, jogador, rodada)
 
+""" 
+this function call the other functions to see if
+the player won after a move
+"""
 def ganhar_partida(grelha, jogador,rodada):
 	if ganhou_vertical(grelha, jogador):
 		return True
@@ -52,6 +61,7 @@ def ganhar_partida(grelha, jogador,rodada):
 	else:
 		return False
 
+# checks if the player won vertically
 def ganhou_vertical(grelha, jogador):
 	for x in range(0,3):
 		for y in range(0,3):
@@ -61,6 +71,7 @@ def ganhou_vertical(grelha, jogador):
 					return True
 	return False
 
+# checks if the player won horizontally
 def ganhou_horizontal(grelha, jogador):
 	for x in range(0,3):
 		for y in range(0,3):
@@ -70,9 +81,11 @@ def ganhou_horizontal(grelha, jogador):
 					return True
 	return False
 
+# checks if the player won diagonaly
 def ganhou_diagonal(grelha, jogador):
 	pass
 
+# asks if you want to play another game and return the answer as True or False
 def jogar_outra():
 	outra = input("Deseja jogar outra partida? s / n\n")
 	if outra == "s":
