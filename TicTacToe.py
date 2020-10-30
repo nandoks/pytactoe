@@ -1,96 +1,96 @@
 
-"""starts a game defining a board of a 3x3 array filled with 0
 
-"""
-def init_partida():
-	grelha = [[0,0,0],[0,0,0],[0,0,0]]
-	jogador = 1
-	rodada = 1
-	while ganhar_partida(grelha, jogador, rodada) is False:
-		imprime_grelha(grelha)
-		jogar(grelha, jogador, rodada)
-		rodada += 1
-		if jogador == 1:
-			jogador = 2
-		else:
-			jogador = 1
-	if jogar_outra():
-		init_partida()
-	else:
-		print("Volte sempre!")
+def game_init():
+	board = [[0,0,0],[0,0,0],[0,0,0]]
 
-# prints the board on the screen
-def imprime_grelha(grelha):
-	for x in range(0,3):
+	player = 0
+	turns = 0
+	win = False
+	print_board(board)
+	while not win:
+		player = change_player(player)
+		make_a_move(board, player)
+		print_board(board)
+		if turns > 3:
+			win = has_won(board)
+			continue
+		turns += 1
+	print(f"Player {player} has won! Congratulations")
+
+def print_board(board):
+	print("\n")
+	for x in range(0, 3):
 		for y in range(0,3):
-			print(grelha[x][y],end='')
-		print(' ')
+			if board[x][y] == 1:
+				print("| X ", end="")
+			elif board[x][y] == 2:
+				print("| O ", end="")
+			else:
+				print("|  ", end=" ")
+		print("|\n")
 
-# makes a play on the board
-def jogar(grelha, jogador, rodada):
-	pos_x = int(input("Escolha a linha: ")) -1
-	pos_y = int(input("Escolha a coluna: ")) -1
-	if 0 <= pos_x <= 2 and 0 <= pos_y <=2:
-		jogada(grelha, jogador, pos_x, pos_y, rodada)
+
+def change_player(player):
+	if player == 1:
+		return 2
 	else:
-		print("Posição inválida")
-		jogar(grelha,jogador, rodada)
+		return 1
 
-# tries a move, make the move if the position is empty, else returns en error and calls itself again
-def jogada(grelha, jogador, pos_x, pos_y, rodada):
-	if grelha[pos_x][pos_y] == 0:
-		grelha[pos_x][pos_y] = jogador
+def make_a_move(board, player):
+	print("Row: ", end="")
+	x = get_play() -1
+	print("Column: ", end="")
+	y = get_play() -1
+	if valid_play(board,x,y):
+		board[x][y] = player
 	else:
-		print("Jogada já feita,escolha outra posição")
-		jogar(grelha, jogador, rodada)
+		print("Invalid position, position already taken")
+		make_a_move(board, player)
 
-""" 
-this function call the other functions to see if
-the player won after a move
-"""
-def ganhar_partida(grelha, jogador,rodada):
-	if ganhou_vertical(grelha, jogador):
-		return True
-	elif ganhou_horizontal(grelha,jogador):
-		return True
-	elif ganhou_diagonal(grelha,jogador):
-		return True
-	elif rodada > 9:
-		print("Ninguem ganhou!")
+def get_play():
+	player_input = int(input())
+	if 1 > player_input or player_input > 3:
+		print("Invalid play, must choose a number between 1 and 3")
+		get_play()
+	return player_input
+
+def valid_play(board, x, y):
+	if board[x][y] != 0:
+		return False
+	return True
+
+
+def has_won(board):
+	if won_vertically(board) or won_horizontally(board) or won_diagonally(board):
 		return True
 	else:
 		return False
 
-# checks if the player won vertically
-def ganhou_vertical(grelha, jogador):
+
+def won_horizontally(board):
 	for x in range(0,3):
 		for y in range(0,3):
-			if grelha[x][y] != 0:
-				if grelha[x][0] == grelha[x][1] == grelha[x][2]:
-					print("Jogador {} ganhou!\n".format(jogador))
-					return True
-	return False
+			if board[x][y] == 0:
+				return False
+		if board[x][0] == board[x][1] == board[x][2]:
+			return True
+	return false
 
-# checks if the player won horizontally
-def ganhou_horizontal(grelha, jogador):
+
+def won_vertically(board):
 	for x in range(0,3):
 		for y in range(0,3):
-			if grelha[x][y] != 0:
-				if grelha[0][y] == grelha[1][y] == grelha[2][y]:
-					print("Jogador {} ganhou!\n".format(jogador))
-					return True
+			if board[x][y] == 0:
+				return False
+			if board[0][y] ==board[1][y] ==board[2][y] :
+				return True
 	return False
 
-# checks if the player won diagonaly
-def ganhou_diagonal(grelha, jogador):
-	pass
-
-# asks if you want to play another game and return the answer as True or False
-def jogar_outra():
-	outra = input("Deseja jogar outra partida? s / n\n")
-	if outra == "s":
+def won_diagonally(board):
+	if board[0][0] == board[1][1] == board[2][2] != 0:
 		return True
-	elif outra == "n":
-		return False
+	if board[2][0] == board[1][1] == board[0][2] != 0:
+		return True
 
-init_partida()
+if __name__ == "__main__":
+	game_init()
